@@ -1,0 +1,30 @@
+# ── Compilación de Maven (se recrea sola) ──
+target/
+
+# ── IntelliJ IDEA ──
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ── Eclipse / VS Code ──
+.classpath
+.project
+.settings/
+.vscode/
+
+# ── Configuración personal y credenciales ──
+config.local.properties
+
+# ── Reportes generados ──
+# Se suben los estilos (reports/assets) y la carpeta vacía de ejecuciones,
+# pero no los reportes que genera cada corrida.
+reports/index.html
+reports/ejecuciones/*
+!reports/ejecuciones/.gitkeep
+
+# ── Sistema ──
+.DS_Store
+Thumbs.db
+*.log

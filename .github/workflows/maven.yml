@@ -1,0 +1,44 @@
+name: Pruebas Selenium (Maven)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      CI: true
+      TEST_ENV: ci
+      # Para probar un sitio real, crea los secrets en GitHub
+      # (Settings → Secrets and variables → Actions) y descomenta:
+      # BASE_URL: ${{ secrets.BASE_URL }}
+      # TEST_USER: ${{ secrets.TEST_USER }}
+      # TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Instalar JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # Google Chrome ya viene instalado en ubuntu-latest.
+      # Selenium Manager descarga el chromedriver correcto automáticamente.
+
+      - name: Ejecutar pruebas
+        run: mvn --batch-mode --no-transfer-progress test
+
+      - name: Publicar reportes
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes
+          path: reports/
+          retention-days: 30

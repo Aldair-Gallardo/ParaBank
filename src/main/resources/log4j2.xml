@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Logs de librerías (Apache POI): solo advertencias y errores en consola -->
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Consola" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} %-5level %logger{1} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="Consola"/>
+        </Root>
+    </Loggers>
+</Configuration>
