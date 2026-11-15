@@ -1,9 +1,9 @@
 # Copia este archivo como config.local.properties (NO se sube a GitHub).
 # Solo escribe aquí los valores que quieras cambiar respecto a config.properties.
 
-# project.name=Banca en Línea
-# test.env=qa
-# base.url=https://qa.tu-aplicacion.com
+# project.name=ParaBank
+# test.env=Practica
+# base.url=https://parabank.parasoft.com/parabank
 # user=usuario.prueba
 # password=ClaveDePrueba123
 # browser=chrome

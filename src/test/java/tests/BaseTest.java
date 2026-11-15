@@ -5,29 +5,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
-import pages.home.HomePage;
 import pages.login.LoginPage;
+import pages.login.LogoutPage;
 import reports.Report;
 import reports.ReportExtension;
 import utils.DriverFactory;
 
-/**
- * Clase base de TODOS los tests (extiéndela: public class MiTest extends BaseTest).
- *
- * Antes de cada test: abre el navegador, crea el reporte y los Page Objects.
- * Después de cada test: ReportExtension guarda el reporte y aquí se cierra el navegador.
- *
- * Para agregar una página nueva: declara el campo y créalo en setUp().
- */
 @ExtendWith(ReportExtension.class)
 public abstract class BaseTest implements ReportExtension.HasReport {
 
     protected WebDriver driver;
     protected Report report;
 
-    // ─── Page Objects ───
-    protected LoginPage loginPage;
-    protected HomePage homePage;
+    // ─── Páginas ───
+    protected LoginPage login;
+    protected LogoutPage logout;
 
     @BeforeEach
     void setUp(TestInfo testInfo) {
@@ -35,8 +27,8 @@ public abstract class BaseTest implements ReportExtension.HasReport {
         report = new Report(driver, testInfo.getDisplayName(),
                 testInfo.getTestClass().map(Class::getSimpleName).orElse(""), testInfo.getTags());
 
-        loginPage = new LoginPage(driver, report);
-        homePage = new HomePage(driver, report);
+        login = new LoginPage(driver, report);
+        logout = new LogoutPage(driver, report);
     }
 
     @AfterEach

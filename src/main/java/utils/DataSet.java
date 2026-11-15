@@ -16,16 +16,21 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * Lectura de datos de prueba desde Excel (src/main/resources/Datos/).
+ * Lectura de datos de prueba desde Excel (src/main/resources/Datos/data.xlsx).
  *
  * Formato de la hoja: la PRIMERA fila son los nombres de columna y cada fila
  * siguiente es un caso. Ejemplo (hoja "Login"):
  *
- *   caseCode | nombreTest              | usuario | password | esperado
- *   TC-010   | Login admin desde Excel | admin   | Admin123 | ok
+ *   caseCode | nombreTest          | usuario | password  | esperado
+ *   TC-001   | Login satisfactorio | alda    | AldaGa_12 | ok
+ *
+ * Uso más común:
+ *   Map<String, String> datos = DataSet.fila("Login", "TC-001");
+ *   datos.get("usuario");   // "alda"
  */
 public final class DataSet {
 
+    /** Ruta del Excel de datos. */
     public static final String EXCEL_FILE = "src/main/resources/Datos/data.xlsx";
 
     private DataSet() {
@@ -36,6 +41,7 @@ public final class DataSet {
         return leerHoja(EXCEL_FILE, hoja);
     }
 
+    /** Lee todas las filas de una hoja de otro archivo Excel. */
     public static List<Map<String, String>> leerHoja(String archivo, String hoja) throws IOException {
         DataFormatter formatter = new DataFormatter();
         List<Map<String, String>> filas = new ArrayList<>();
@@ -47,12 +53,14 @@ public final class DataSet {
                 throw new IllegalArgumentException("La hoja \"" + hoja + "\" no existe en " + archivo);
             }
 
+            // Fila 1: nombres de columna
             Row encabezado = sheet.getRow(sheet.getFirstRowNum());
             List<String> columnas = new ArrayList<>();
             for (int c = 0; c < encabezado.getLastCellNum(); c++) {
                 columnas.add(formatter.formatCellValue(encabezado.getCell(c)).trim());
             }
 
+            // Filas siguientes: un caso por fila
             for (int r = sheet.getFirstRowNum() + 1; r <= sheet.getLastRowNum(); r++) {
                 Row row = sheet.getRow(r);
                 if (row == null) continue;
@@ -80,5 +88,10 @@ public final class DataSet {
             throw new IllegalArgumentException("No hay datos para el caso " + caseCode + " en la hoja " + hoja);
         }
         return encontradas;
+    }
+
+    /** Devuelve la fila de un caso. Uso: DataSet.fila("Login", "TC-001") */
+    public static Map<String, String> fila(String hoja, String caseCode) throws IOException {
+        return porCaso(hoja, caseCode).get(0);
     }
 }
